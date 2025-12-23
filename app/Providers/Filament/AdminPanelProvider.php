@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\PreventBackHistory;
+use App\Filament\Pages\Auth\Login;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
         ->default()
         ->id('admin')
         ->path('admin')
-        ->login()
+        ->login(Login::class)        
         // 1. CHANGE BRAND NAME (Removes "Laravel")
         ->brandName('BEU Monitoring System') 
         
@@ -55,6 +57,8 @@ class AdminPanelProvider extends PanelProvider
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Filament\Http\Middleware\DisableBladeIconComponents::class,
             \Filament\Http\Middleware\DispatchServingFilamentEvent::class,
+
+            \App\Http\Middleware\PreventBackHistory::class,        
         ])
         ->authMiddleware([
             \Filament\Http\Middleware\Authenticate::class,
